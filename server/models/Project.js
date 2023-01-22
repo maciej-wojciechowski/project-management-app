@@ -1,11 +1,11 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const ProjectSchema = new mongoose.Schema({
   name: {
-    String,
+    type: String,
   },
   description: {
-    String,
+    type: String,
   },
   status: {
     type: String,
@@ -15,6 +15,6 @@ const ProjectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Client",
   },
-})
+});
 
-module.exports = mongoose.model("Project", ProjectSchema)
+module.exports = mongoose.model("Project", ProjectSchema);
