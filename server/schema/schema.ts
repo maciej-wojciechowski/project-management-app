@@ -1,8 +1,8 @@
 // Mongoose models
-const Project = require("../models/Project");
-const Client = require("../models/Client");
+import Project from "../models/Project";
+import Client from "../models/Client";
 
-const {
+import {
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
@@ -10,7 +10,7 @@ const {
   GraphQLList,
   GraphQLNonNull,
   GraphQLEnumType,
-} = require("graphql");
+} from "graphql";
 
 //ProjectType
 const ProjectType = new GraphQLObjectType({
@@ -177,7 +177,7 @@ const mutation = new GraphQLObjectType({
   },
 });
 
-module.exports = new GraphQLSchema({
+export default new GraphQLSchema({
   query: RootQuery,
   mutation,
 });
