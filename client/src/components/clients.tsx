@@ -1,14 +1,15 @@
-import {gql} from "@apollo/client";
 import {Button, Table} from "antd";
-import client from "apollo-client";
 import React from "react";
-import {PropertyAssignment} from "typescript";
+import {useMutation} from "@apollo/client";
+import {DELETE_CLIENT} from "@/mutations/client-mutations";
+import client from "apollo-client";
 
 type Props = {
   clients: [Record<string, unknown>];
 };
 
 const Clients = ({clients}: Props) => {
+  const [deleteClient] = useMutation(DELETE_CLIENT);
   if (!clients) {
     return null;
   }
@@ -34,6 +35,14 @@ const Clients = ({clients}: Props) => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+    },
+    {
+      //   title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (_, record: any) => (
+        <Button onClick={() => console.log(record?.key)}>Delete</Button>
+      ),
     },
   ];
   console.log(clients);

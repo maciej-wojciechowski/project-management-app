@@ -4,6 +4,7 @@ import {Inter} from "@next/font/google";
 import client from "apollo-client";
 import {gql} from "@apollo/client";
 import Clients from "@/components/clients";
+import {GET_CLIENTS} from "@/queries/clients-queries";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -28,17 +29,7 @@ export default function Home({clients}: any) {
 export async function getServerSideProps() {
   // for build time only fetch - getStaticProps
   const {data} = await client.query({
-    query: gql`
-      query {
-        clients {
-          name
-          id
-          name
-          phone
-          email
-        }
-      }
-    `,
+    query: GET_CLIENTS,
   });
 
   return {
