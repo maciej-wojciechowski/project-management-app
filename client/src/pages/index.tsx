@@ -1,15 +1,14 @@
 import Head from "next/head";
-import Image from "next/image";
 import {Inter} from "@next/font/google";
-import styles from "@/styles/Home.module.css";
 
 import client from "apollo-client";
 import {gql} from "@apollo/client";
+import Clients from "@/components/clients";
 
 const inter = Inter({subsets: ["latin"]});
 
-export default function Home({projects}: any) {
-  console.log(projects);
+export default function Home({clients}: any) {
+  console.log(clients);
   return (
     <>
       <Head>
@@ -20,6 +19,7 @@ export default function Home({projects}: any) {
       </Head>
       <div className="flex flex-col w-screen h-screen">
         <h1 className="text-2xl text-center">Management APP Hello</h1>
+        <Clients clients={clients} />
       </div>
     </>
   );
@@ -30,14 +30,12 @@ export async function getServerSideProps() {
   const {data} = await client.query({
     query: gql`
       query {
-        projects {
+        clients {
           name
           id
-          description
-          status
-          client {
-            id
-          }
+          name
+          phone
+          email
         }
       }
     `,
@@ -45,7 +43,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      projects: data,
+      clients: data.clients,
     },
   };
 }
