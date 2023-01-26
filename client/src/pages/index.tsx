@@ -18,6 +18,9 @@ export default function Home({projects}: any) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="flex flex-col w-screen h-screen">
+        <h1 className="text-2xl text-center">Management APP Hello</h1>
+      </div>
     </>
   );
 }
