@@ -1,7 +1,12 @@
 // const mongoose = require("mongoose");
 import mongoose from "mongoose";
+import {
+  ClientDocument,
+  ClientModel,
+  ClientSchema,
+} from "../types/mongoose-types";
 
-const ClientSchema = new mongoose.Schema({
+const ClientSchema: ClientSchema = new mongoose.Schema({
   name: {
     type: String,
   },
@@ -13,4 +18,9 @@ const ClientSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Client", ClientSchema);
+const ClientModel = mongoose.model<ClientDocument, ClientModel>(
+  "Client",
+  ClientSchema
+);
+
+export default ClientModel;
