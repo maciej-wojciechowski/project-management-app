@@ -3,9 +3,10 @@ import React from "react";
 import {useMutation} from "@apollo/client";
 import {DELETE_CLIENT} from "@/mutations/client-mutations";
 import client from "apollo-client";
-
+import {ColumnsType} from "antd/es/table";
+import {Client} from "../types";
 type Props = {
-  clients: [Record<string, unknown>];
+  clients: Client[];
 };
 
 const Clients = ({clients}: Props) => {
@@ -20,7 +21,7 @@ const Clients = ({clients}: Props) => {
     email: client.email,
   }));
 
-  const columns = [
+  const columns: ColumnsType<(typeof dataSource)[0]> = [
     {
       title: "Name",
       dataIndex: "name",
