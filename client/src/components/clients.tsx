@@ -1,20 +1,26 @@
 import {Button, Table} from "antd";
 import React from "react";
-import {useMutation} from "@apollo/client";
+import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CLIENT} from "@/mutations/client-mutations";
-import client from "apollo-client";
 import {ColumnsType} from "antd/es/table";
 import {Client} from "../types";
+import {GET_CLIENTS} from "@/queries/clients-queries";
+
 type Props = {
   clients: Client[];
 };
 
 const Clients = ({clients}: Props) => {
-  const [deleteClient] = useMutation(DELETE_CLIENT);
-  if (!clients) {
+  const [deleteClient] = useMutation<Client, {id: string}>(DELETE_CLIENT);
+  const {data} = useQuery<{clients: Client[]}>(GET_CLIENTS);
+
+  const results = data?.clients ?? clients;
+
+  if (!results) {
     return null;
   }
-  const dataSource = clients.map(client => ({
+
+  const dataSource = results.map(client => ({
     key: client.id,
     name: client.name,
     phone: client.phone,
@@ -38,15 +44,22 @@ const Clients = ({clients}: Props) => {
       key: "email",
     },
     {
-      //   title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (_, record: any) => (
-        <Button onClick={() => console.log(record?.key)}>Delete</Button>
+      render: (_, {key: clientId}) => (
+        <Button
+          onClick={() => {
+            deleteClient({
+              variables: {id: clientId},
+              refetchQueries: [{query: GET_CLIENTS}],
+            });
+          }}
+        >
+          Delete
+        </Button>
       ),
     },
   ];
-  console.log(clients);
   return (
     <div>
       Clients
