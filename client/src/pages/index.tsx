@@ -2,9 +2,8 @@ import Head from "next/head";
 import {Inter} from "@next/font/google";
 
 import client from "apollo-client";
-import {gql} from "@apollo/client";
 import Clients from "@/components/clients";
-import {GET_CLIENTS} from "@/queries/clients-queries";
+import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
 
 const inter = Inter({subsets: ["latin"]});
 

@@ -1,7 +1,7 @@
-import {gql} from "@apollo/client";
+import {graphql} from "@/gql";
 
-const GET_CLIENTS = gql`
-  query {
+const GET_CLIENTS = graphql(`
+  query getClients {
     clients {
       name
       id
@@ -10,6 +10,6 @@ const GET_CLIENTS = gql`
       email
     }
   }
-`;
+`);
 
 export {GET_CLIENTS};

@@ -1,20 +1,20 @@
 import {Button, Table} from "antd";
 import React from "react";
-import {useMutation, useQuery} from "@apollo/client";
-import {DELETE_CLIENT} from "@/mutations/client-mutations";
+import {gql, useMutation, useQuery} from "@apollo/client";
+import {DELETE_CLIENT} from "@/graphql/mutations/client-mutations";
 import {ColumnsType} from "antd/es/table";
 import {Client} from "../types";
-import {GET_CLIENTS} from "@/queries/clients-queries";
+import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
 
 type Props = {
   clients: Client[];
 };
 
 const Clients = ({clients}: Props) => {
-  const [deleteClient] = useMutation<Client, {id: string}>(DELETE_CLIENT);
-  const {data} = useQuery<{clients: Client[]}>(GET_CLIENTS);
+  const [deleteClient] = useMutation(DELETE_CLIENT);
+  const {data} = useQuery(GET_CLIENTS);
 
-  const results = data?.clients ?? clients;
+  const results = data?.clients;
 
   if (!results) {
     return null;

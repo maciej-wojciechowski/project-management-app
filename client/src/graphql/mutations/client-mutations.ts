@@ -1,6 +1,6 @@
-import {gql} from "@apollo/client";
+import {graphql} from "@/gql";
 
-const DELETE_CLIENT = gql`
+const DELETE_CLIENT = graphql(`
   mutation deleteClient($id: ID!) {
     deleteClient(id: $id) {
       id
@@ -9,6 +9,6 @@ const DELETE_CLIENT = gql`
       phone
     }
   }
-`;
+`);
 
 export {DELETE_CLIENT};
