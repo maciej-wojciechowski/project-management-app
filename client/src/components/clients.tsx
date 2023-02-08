@@ -3,8 +3,8 @@ import React from "react";
 import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CLIENT} from "@/graphql/mutations/client-mutations";
 import {ColumnsType} from "antd/es/table";
-import {Client} from "../types";
 import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
+import {Client} from "@/gql/graphql";
 
 type Props = {
   clients: Client[];
