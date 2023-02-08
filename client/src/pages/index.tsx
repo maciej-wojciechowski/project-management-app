@@ -1,14 +1,11 @@
 import Head from "next/head";
 import {Inter} from "@next/font/google";
 
-import client from "apollo-client";
 import Clients from "@/components/clients";
-import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
 
 const inter = Inter({subsets: ["latin"]});
 
 export default function Home({clients}: any) {
-  console.log(clients);
   return (
     <>
       <Head>
@@ -19,7 +16,7 @@ export default function Home({clients}: any) {
       </Head>
       <div className="flex flex-col w-screen h-screen">
         <h1 className="text-2xl text-center">Management APP Hello</h1>
-        <Clients clients={clients} />
+        <Clients />
       </div>
     </>
   );
@@ -27,13 +24,11 @@ export default function Home({clients}: any) {
 
 export async function getServerSideProps() {
   // for build time only fetch - getStaticProps
-  const {data} = await client.query({
-    query: GET_CLIENTS,
-  });
+  // const {data} = await client.query({
+  //   query: GET_CLIENTS,
+  // });
 
   return {
-    props: {
-      clients: data.clients,
-    },
+    props: {},
   };
 }

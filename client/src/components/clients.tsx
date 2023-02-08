@@ -1,19 +1,18 @@
-import {Button, Table} from "antd";
-import React from "react";
+import {Button, Modal, Table} from "antd";
+import React, {useState} from "react";
 import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CLIENT} from "@/graphql/mutations/client-mutations";
 import {ColumnsType} from "antd/es/table";
 import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
 import {Client} from "@/gql/graphql";
+import ClientsModal from "./clients-modal";
 
-type Props = {
-  clients: Client[];
-};
+type Props = {};
 
-const Clients = ({clients}: Props) => {
+const Clients = ({}: Props) => {
   const [deleteClient] = useMutation(DELETE_CLIENT);
   const {data} = useQuery(GET_CLIENTS);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const results = data?.clients;
 
   if (!results?.length) {
@@ -63,7 +62,9 @@ const Clients = ({clients}: Props) => {
   return (
     <div>
       Clients
+      <Button onClick={() => setIsModalOpen(true)}>Add Client</Button>
       <Table dataSource={dataSource} columns={columns} />
+      <ClientsModal open={isModalOpen} onCancel={() => setIsModalOpen(false)} />
     </div>
   );
 };
