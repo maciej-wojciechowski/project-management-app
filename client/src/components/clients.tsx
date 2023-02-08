@@ -1,6 +1,6 @@
 import {Button, Table} from "antd";
 import React from "react";
-import {gql, useMutation, useQuery} from "@apollo/client";
+import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CLIENT} from "@/graphql/mutations/client-mutations";
 import {ColumnsType} from "antd/es/table";
 import {Client} from "../types";
@@ -16,7 +16,7 @@ const Clients = ({clients}: Props) => {
 
   const results = data?.clients;
 
-  if (!results) {
+  if (!results?.length) {
     return null;
   }
 

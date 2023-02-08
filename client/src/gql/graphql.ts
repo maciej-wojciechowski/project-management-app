@@ -15,15 +15,13 @@ export type Scalars = {
 };
 
 export type Client = {
-  __typename?: 'Client';
-  email: Maybe<Scalars['String']>;
+  email: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
   phone: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
   addClient: Maybe<Client>;
   addProject: Maybe<Project>;
   deleteClient: Maybe<Client>;
@@ -65,7 +63,6 @@ export type MutationUpdateProjectArgs = {
 };
 
 export type Project = {
-  __typename?: 'Project';
   client: Maybe<Client>;
   description: Maybe<Scalars['String']>;
   id: Maybe<Scalars['ID']>;
@@ -86,9 +83,8 @@ export enum ProjectStatusUpdate {
 }
 
 export type RootQueryType = {
-  __typename?: 'RootQueryType';
   client: Maybe<Client>;
-  clients: Maybe<Array<Maybe<Client>>>;
+  clients: Maybe<Array<Client>>;
   project: Maybe<Project>;
   projects: Maybe<Array<Maybe<Project>>>;
 };
@@ -108,12 +104,12 @@ export type DeleteClientMutationVariables = Exact<{
 }>;
 
 
-export type DeleteClientMutation = { __typename?: 'Mutation', deleteClient: { __typename?: 'Client', id: string, name: string, email: string | null, phone: string | null } | null };
+export type DeleteClientMutation = { deleteClient: { id: string, name: string, email: string, phone: string | null } | null };
 
 export type GetClientsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetClientsQuery = { __typename?: 'RootQueryType', clients: Array<{ __typename?: 'Client', name: string, id: string, phone: string | null, email: string | null } | null> | null };
+export type GetClientsQuery = { clients: Array<{ name: string, id: string, phone: string | null, email: string }> | null };
 
 
 export const DeleteClientDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteClient"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteClient"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}}]}}]}}]} as unknown as DocumentNode<DeleteClientMutation, DeleteClientMutationVariables>;
@@ -128,15 +124,13 @@ export type Scalars = {
 };
 
 export type Client = {
-  __typename?: 'Client';
-  email: Maybe<Scalars['String']>;
+  email: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
   phone: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
   addClient: Maybe<Client>;
   addProject: Maybe<Project>;
   deleteClient: Maybe<Client>;
@@ -178,7 +172,6 @@ export type MutationUpdateProjectArgs = {
 };
 
 export type Project = {
-  __typename?: 'Project';
   client: Maybe<Client>;
   description: Maybe<Scalars['String']>;
   id: Maybe<Scalars['ID']>;
@@ -199,9 +192,8 @@ export enum ProjectStatusUpdate {
 }
 
 export type RootQueryType = {
-  __typename?: 'RootQueryType';
   client: Maybe<Client>;
-  clients: Maybe<Array<Maybe<Client>>>;
+  clients: Maybe<Array<Client>>;
   project: Maybe<Project>;
   projects: Maybe<Array<Maybe<Project>>>;
 };
