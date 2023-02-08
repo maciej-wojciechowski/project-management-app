@@ -64,7 +64,7 @@ const Clients = ({}: Props) => {
       Clients
       <Button onClick={() => setIsModalOpen(true)}>Add Client</Button>
       <Table dataSource={dataSource} columns={columns} />
-      <ClientsModal open={isModalOpen} onCancel={() => setIsModalOpen(false)} />
+      <ClientsModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
