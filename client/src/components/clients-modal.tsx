@@ -2,7 +2,7 @@ import {MutationAddClientArgs} from "@/gql/graphql";
 import {ADD_CLIENT} from "@/graphql/mutations/client-mutations";
 import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
 import {useMutation} from "@apollo/client";
-import {Form, Input, Modal, ModalProps} from "antd";
+import {Button, Form, Input, Modal, ModalProps} from "antd";
 import React from "react";
 
 type Props = ModalProps & {
@@ -11,7 +11,20 @@ type Props = ModalProps & {
 
 export default function ClientsModal({...props}: Props) {
   const [addClient] = useMutation(ADD_CLIENT, {
-    refetchQueries: [{query: GET_CLIENTS}],
+    //saving to cache not refetching
+    update(cache, {data}) {
+      const clients = cache.readQuery({query: GET_CLIENTS})?.clients;
+      const addClient = data?.addClient;
+
+      if (!addClient || !clients) {
+        return;
+      }
+
+      cache.writeQuery({
+        query: GET_CLIENTS,
+        data: {clients: clients.concat([addClient])},
+      });
+    },
   });
   const [form] = Form.useForm();
 
@@ -23,26 +36,11 @@ export default function ClientsModal({...props}: Props) {
   const onFinish = (values: MutationAddClientArgs) => {
     addClient({variables: values});
     props.onClose();
-  };
-
-  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    form.validateFields().then(values => {
-      form.submit();
-    });
+    form.resetFields();
   };
 
   return (
-    <Modal
-      title="Basic Modal"
-      {...props}
-      okButtonProps={
-        {
-          // disabled: form.validateFields,
-        }
-      }
-      onOk={onSubmit}
-      onCancel={onClose}
-    >
+    <Modal title="Basic Modal" {...props} onCancel={onClose} footer={null}>
       <Form form={form} name="add-client" onFinish={onFinish}>
         <Form.Item name="name" label="Name" rules={[{required: true}]}>
           <Input />
@@ -63,6 +61,9 @@ export default function ClientsModal({...props}: Props) {
         <Form.Item name="phone" label="Phone" rules={[{required: true}]}>
           <Input />
         </Form.Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form>
     </Modal>
   );
