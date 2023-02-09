@@ -22,7 +22,7 @@ export default function ClientsModal({...props}: Props) {
 
       cache.writeQuery({
         query: GET_CLIENTS,
-        data: {clients: clients.concat([addClient])},
+        data: {clients: [...clients, addClient]},
       });
     },
   });
