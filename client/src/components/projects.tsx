@@ -1,0 +1,25 @@
+import {GET_PROJECTS} from "@/graphql/queries/project-queries";
+import {useQuery} from "@apollo/client";
+import {Button, Card} from "antd";
+import React from "react";
+
+type Props = {};
+
+export default function Projects({}: Props) {
+  const {data} = useQuery(GET_PROJECTS);
+  const projects = data?.projects;
+
+  if (!projects?.length) {
+    return null;
+  }
+  return (
+    <div>
+      Projects
+      {projects.map(project => (
+        <Card title={project?.name} extra={<Button>More</Button>}>
+          <p>{project?.status}</p>
+        </Card>
+      ))}
+    </div>
+  );
+}

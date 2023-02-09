@@ -2,6 +2,7 @@ import Head from "next/head";
 import {Inter} from "@next/font/google";
 
 import Clients from "@/components/clients";
+import Projects from "@/components/projects";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -17,6 +18,7 @@ export default function Home({clients}: any) {
       <div className="flex flex-col w-screen h-screen">
         <h1 className="text-2xl text-center">Management APP Hello</h1>
         <Clients />
+        <Projects />
       </div>
     </>
   );
