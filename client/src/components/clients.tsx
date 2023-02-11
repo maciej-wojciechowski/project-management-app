@@ -1,10 +1,9 @@
-import {Button, Modal, Table} from "antd";
+import {Button, Modal, Table, Typography} from "antd";
 import React, {useState} from "react";
 import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CLIENT} from "@/graphql/mutations/client-mutations";
 import {ColumnsType} from "antd/es/table";
 import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
-import {Client} from "@/gql/graphql";
 import ClientsModal from "./clients-modal";
 
 type Props = {};
@@ -60,9 +59,11 @@ const Clients = ({}: Props) => {
     },
   ];
   return (
-    <div>
-      Clients
-      <Button onClick={() => setIsModalOpen(true)}>Add Client</Button>
+    <div className="my-5">
+      <Typography.Title level={4}>Clients</Typography.Title>
+      <Button className="mb-5 mt-2" onClick={() => setIsModalOpen(true)}>
+        Add Client
+      </Button>
       <Table dataSource={dataSource} columns={columns} />
       <ClientsModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>

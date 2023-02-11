@@ -40,8 +40,13 @@ export default function ClientsModal({...props}: Props) {
   };
 
   return (
-    <Modal title="Basic Modal" {...props} onCancel={onClose} footer={null}>
-      <Form form={form} name="add-client" onFinish={onFinish}>
+    <Modal title="Add new client" {...props} onCancel={onClose} footer={null}>
+      <Form
+        className="flex flex-col [&_.ant-form-item-label]:w-16 [&_.ant-form-item-label]:text-left"
+        form={form}
+        name="add-client"
+        onFinish={onFinish}
+      >
         <Form.Item name="name" label="Name" rules={[{required: true}]}>
           <Input />
         </Form.Item>
@@ -61,7 +66,7 @@ export default function ClientsModal({...props}: Props) {
         <Form.Item name="phone" label="Phone" rules={[{required: true}]}>
           <Input />
         </Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button className="text-black mx-auto" type="primary" htmlType="submit">
           Submit
         </Button>
       </Form>

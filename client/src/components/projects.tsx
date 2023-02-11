@@ -1,6 +1,6 @@
 import {GET_PROJECTS} from "@/graphql/queries/project-queries";
 import {useQuery} from "@apollo/client";
-import {Button, Card} from "antd";
+import {Button, Card, Typography} from "antd";
 import React from "react";
 
 type Props = {};
@@ -14,12 +14,14 @@ export default function Projects({}: Props) {
   }
   return (
     <div>
-      Projects
-      {projects.map(project => (
-        <Card title={project?.name} extra={<Button>More</Button>}>
-          <p>{project?.status}</p>
-        </Card>
-      ))}
+      <Typography.Title level={4}>Projects</Typography.Title>
+      <div className="grid grid-cols-3 gap-3">
+        {projects.map(project => (
+          <Card title={project?.name} extra={<Button>More</Button>}>
+            <p>{project?.status}</p>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
