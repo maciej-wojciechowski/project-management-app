@@ -16,7 +16,7 @@ export type Scalars = {
 
 export type Client = {
   email: Scalars['String'];
-  id: Scalars['String'];
+  id: Scalars['ID'];
   name: Scalars['String'];
   phone: Maybe<Scalars['String']>;
 };
@@ -65,7 +65,7 @@ export type MutationUpdateProjectArgs = {
 export type Project = {
   client: Maybe<Client>;
   description: Maybe<Scalars['String']>;
-  id: Maybe<Scalars['ID']>;
+  id: Scalars['ID'];
   name: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
 };
@@ -123,7 +123,7 @@ export type GetClientsQuery = { clients: Array<{ name: string, id: string, phone
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProjectsQuery = { projects: Array<{ id: string | null, name: string | null, status: string | null } | null> | null };
+export type GetProjectsQuery = { projects: Array<{ id: string, name: string | null, status: string | null } | null> | null };
 
 
 export const DeleteClientDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteClient"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteClient"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}}]}}]}}]} as unknown as DocumentNode<DeleteClientMutation, DeleteClientMutationVariables>;

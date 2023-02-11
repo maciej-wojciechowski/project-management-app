@@ -16,7 +16,7 @@ import {
 const ProjectType = new GraphQLObjectType({
   name: "Project",
   fields: () => ({
-    id: {type: GraphQLID},
+    id: {type: GraphQLNonNull(GraphQLID)},
     name: {type: GraphQLString},
     description: {type: GraphQLString},
     status: {type: GraphQLString},
@@ -32,7 +32,7 @@ const ProjectType = new GraphQLObjectType({
 const ClientType = new GraphQLObjectType({
   name: "Client",
   fields: () => ({
-    id: {type: GraphQLNonNull(GraphQLString)},
+    id: {type: GraphQLNonNull(GraphQLID)},
     name: {type: GraphQLNonNull(GraphQLString)},
     email: {type: GraphQLNonNull(GraphQLString)},
     phone: {type: GraphQLString},
