@@ -3,6 +3,7 @@ import {Inter} from "@next/font/google";
 
 import Clients from "@/components/clients";
 import Projects from "@/components/projects";
+import {Divider} from "antd";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -18,6 +19,7 @@ export default function Home({clients}: any) {
       <div className="flex flex-col w-screen h-screen px-12">
         <h1 className="text-2xl text-center">Management APP Hello</h1>
         <Projects />
+        <Divider />
         <Clients />
       </div>
     </>

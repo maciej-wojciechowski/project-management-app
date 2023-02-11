@@ -74,7 +74,7 @@ const Clients = ({}: Props) => {
     },
   ];
   return (
-    <div className="my-5">
+    <div className="">
       <Typography.Title level={4}>Clients</Typography.Title>
       <Button className="mb-5 mt-2" onClick={() => setIsModalOpen(true)}>
         Add Client
