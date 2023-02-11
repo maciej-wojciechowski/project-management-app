@@ -49,7 +49,22 @@ const Clients = ({}: Props) => {
           onClick={() => {
             deleteClient({
               variables: {id: clientId},
-              refetchQueries: [{query: GET_CLIENTS}],
+              // refetchQueries: [{query: GET_CLIENTS}],
+              update(cache, {data}) {
+                const clients = cache.readQuery({query: GET_CLIENTS})?.clients;
+                const deleteClient = data?.deleteClient;
+
+                if (!deleteClient || !clients) {
+                  return;
+                }
+
+                cache.writeQuery({
+                  query: GET_CLIENTS,
+                  data: {
+                    clients: clients.filter(client => client.id !== clientId),
+                  },
+                });
+              },
             });
           }}
         >
