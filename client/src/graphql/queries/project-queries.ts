@@ -10,4 +10,19 @@ const GET_PROJECTS = graphql(`
   }
 `);
 
-export {GET_PROJECTS};
+const GET_PROJECT = graphql(`
+  query getProject($id: ID!) {
+    project(id: $id) {
+      id
+      name
+      status
+      description
+      client {
+        id
+        name
+      }
+    }
+  }
+`);
+
+export {GET_PROJECTS, GET_PROJECT};
