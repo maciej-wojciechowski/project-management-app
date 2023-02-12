@@ -20,6 +20,8 @@ const GET_PROJECT = graphql(`
       client {
         id
         name
+        email
+        phone
       }
     }
   }

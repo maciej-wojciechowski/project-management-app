@@ -21,7 +21,7 @@ const ProjectType = new GraphQLObjectType({
     description: {type: GraphQLNonNull(GraphQLString)},
     status: {type: GraphQLNonNull(GraphQLString)},
     client: {
-      type: ClientType,
+      type: GraphQLNonNull(ClientType),
       resolve(parent, args) {
         return Client.findById(parent.clientId);
       },
