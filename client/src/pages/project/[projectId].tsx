@@ -4,8 +4,9 @@ import client from "apollo-client";
 import {GetServerSideProps} from "next";
 import {useRouter} from "next/router";
 import React from "react";
-import {Card} from "antd";
+import {Button, Card} from "antd";
 import ClientInfo from "@/components/client-info";
+import Link from "next/link";
 
 type Props = {
   projectData: GetProjectQuery["project"];
@@ -15,11 +16,17 @@ const ProjectPage = ({projectData}: Props) => {
   if (!projectData) {
     return null;
   }
-  console.log({projectData});
   const router = useRouter();
   const {projectId} = router.query;
   return (
-    <Card title={projectData.name}>
+    <Card
+      title={projectData.name}
+      extra={
+        <Link href="/">
+          <Button>Back</Button>
+        </Link>
+      }
+    >
       <span>Status: {projectData.status}</span>
       <p>
         <span>Description: </span>

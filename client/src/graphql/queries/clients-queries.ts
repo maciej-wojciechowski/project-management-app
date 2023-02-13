@@ -12,4 +12,14 @@ const GET_CLIENTS = graphql(`
   }
 `);
 
-export {GET_CLIENTS};
+const GET_CLIENTS_IDS_FOR_SELECT = graphql(`
+  query getClientsIds {
+    clients {
+      name
+      id
+      name
+    }
+  }
+`);
+
+export {GET_CLIENTS, GET_CLIENTS_IDS_FOR_SELECT};

@@ -9,7 +9,7 @@ type Props = ModalProps & {
   onClose: () => void;
 };
 
-export default function ClientsModal({...props}: Props) {
+const ClientsModal = ({...props}: Props) => {
   const [addClient] = useMutation(ADD_CLIENT, {
     //saving to cache not refetching
     update(cache, {data}) {
@@ -42,7 +42,7 @@ export default function ClientsModal({...props}: Props) {
   return (
     <Modal title="Add new client" {...props} onCancel={onClose} footer={null}>
       <Form
-        className="flex flex-col [&_.ant-form-item-label]:w-16 [&_.ant-form-item-label]:text-left"
+        className="flex flex-col mt-5 [&_.ant-form-item-label]:w-16 [&_.ant-form-item-label]:text-left"
         form={form}
         name="add-client"
         onFinish={onFinish}
@@ -63,13 +63,19 @@ export default function ClientsModal({...props}: Props) {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="phone" label="Phone" rules={[{required: true}]}>
+        <Form.Item
+          name="phone"
+          label="Phone"
+          rules={[{required: true}, {min: 9}, {max: 9}]}
+        >
           <Input />
         </Form.Item>
-        <Button className="text-black mx-auto" type="primary" htmlType="submit">
+        <Button className="text-black ml-auto" type="primary" htmlType="submit">
           Submit
         </Button>
       </Form>
     </Modal>
   );
-}
+};
+
+export default ClientsModal;
