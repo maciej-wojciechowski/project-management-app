@@ -20,24 +20,10 @@ const ProjectsModal = ({...props}: Props) => {
   const [addProject] = useMutation(ADD_PROJECT, {
     refetchQueries: [{query: GET_PROJECTS}],
   });
-  const {data: clientIdsData} = useQuery(GET_CLIENTS_IDS_FOR_SELECT);
+  const {data: clientIdsData, loading: isLoadingClients} = useQuery(
+    GET_CLIENTS_IDS_FOR_SELECT
+  );
   const clientIds = clientIdsData?.clients || [];
-  // const [addClient] = useMutation(ADD_CLIENT, {
-  //   //saving to cache not refetching
-  //   update(cache, {data}) {
-  //     const clients = cache.readQuery({query: GET_CLIENTS})?.clients;
-  //     const addClient = data?.addClient;
-
-  //     if (!addClient || !clients) {
-  //       return;
-  //     }
-
-  //     cache.writeQuery({
-  //       query: GET_CLIENTS,
-  //       data: {clients: [...clients, addClient]},
-  //     });
-  //   },
-  // });
   const [form] = Form.useForm();
 
   const onClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -82,7 +68,7 @@ const ProjectsModal = ({...props}: Props) => {
           </Select>
         </Form.Item>
         <Form.Item name="clientId" label="Client" rules={[{required: true}]}>
-          <Select>
+          <Select loading={isLoadingClients}>
             {clientIds?.map(client => (
               <Select.Option value={client.id}>{client.name}</Select.Option>
             ))}

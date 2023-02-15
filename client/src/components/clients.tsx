@@ -1,4 +1,4 @@
-import {Button, Modal, Table, Typography} from "antd";
+import {Button, Modal, Spin, Table, Typography} from "antd";
 import React, {useState} from "react";
 import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CLIENT} from "@/graphql/mutations/client-mutations";
@@ -10,22 +10,18 @@ type Props = {};
 
 const Clients = ({}: Props) => {
   const [deleteClient] = useMutation(DELETE_CLIENT);
-  const {data} = useQuery(GET_CLIENTS);
+  const {data, loading} = useQuery(GET_CLIENTS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const results = data?.clients;
 
-  if (!results?.length) {
-    return null;
-  }
-
-  const dataSource = results.map(client => ({
+  const dataSource = results?.map(client => ({
     key: client.id,
     name: client.name,
     phone: client.phone,
     email: client.email,
   }));
 
-  const columns: ColumnsType<(typeof dataSource)[0]> = [
+  const columns: ColumnsType<NonNullable<typeof dataSource>[0]> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -79,7 +75,9 @@ const Clients = ({}: Props) => {
       <Button className="mb-5 mt-2" onClick={() => setIsModalOpen(true)}>
         Add Client
       </Button>
-      <Table dataSource={dataSource} columns={columns} />
+      <Spin spinning={loading}>
+        <Table dataSource={dataSource} columns={columns} />
+      </Spin>
       <ClientsModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );

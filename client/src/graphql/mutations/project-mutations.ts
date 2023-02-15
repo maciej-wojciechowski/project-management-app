@@ -26,4 +26,13 @@ const ADD_PROJECT = graphql(`
   }
 `);
 
-export {ADD_PROJECT};
+const DELETE_PROJECT = graphql(`
+  mutation deleteProject($id: ID!) {
+    deleteProject(id: $id) {
+      id
+      name
+    }
+  }
+`);
+
+export {ADD_PROJECT, DELETE_PROJECT};
