@@ -1,5 +1,6 @@
 import {Layout} from "antd";
 import Head from "next/head";
+import Link from "next/link";
 import React, {PropsWithChildren} from "react";
 
 const MainLayout: React.FC<PropsWithChildren> = ({children}) => {
@@ -12,7 +13,11 @@ const MainLayout: React.FC<PropsWithChildren> = ({children}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout className="h-[100vh] overflow-hidden">
-        <Layout.Header className="!text-white">Management App</Layout.Header>
+        <Layout.Header className="!text-white">
+          <Link href={"/"}>
+            <h4>Management App</h4>
+          </Link>
+        </Layout.Header>
         <Layout.Content className="h-[calc(100vh-65px)] overflow-scroll flex flex-col w-screen h-screen py-6 px-12">
           {children}
         </Layout.Content>
