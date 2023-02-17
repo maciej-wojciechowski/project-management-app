@@ -76,7 +76,11 @@ const Clients = ({}: Props) => {
         Add Client
       </Button>
       <Spin spinning={loading}>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          pagination={{pageSize: 5}}
+        />
       </Spin>
       <ClientsModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>

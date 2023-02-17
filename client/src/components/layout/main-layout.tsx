@@ -18,7 +18,7 @@ const MainLayout: React.FC<PropsWithChildren> = ({children}) => {
             <h4>Management App</h4>
           </Link>
         </Layout.Header>
-        <Layout.Content className="h-[calc(100vh-65px)] overflow-scroll flex flex-col w-screen h-screen py-6 px-12">
+        <Layout.Content className="h-[calc(100vh-65px)] overflow-scroll flex flex-col items-center w-screen h-screen py-6 px-12">
           {children}
         </Layout.Content>
       </Layout>
