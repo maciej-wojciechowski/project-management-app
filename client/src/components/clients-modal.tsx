@@ -66,7 +66,13 @@ const ClientsModal = ({...props}: Props) => {
         <Form.Item
           name="phone"
           label="Phone"
-          rules={[{required: true}, {min: 9}, {max: 9}]}
+          rules={[
+            {required: true},
+            {
+              pattern: new RegExp(/^\d{9}$/),
+              message: "Not a valid number",
+            },
+          ]}
         >
           <Input />
         </Form.Item>
