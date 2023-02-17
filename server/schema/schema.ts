@@ -39,6 +39,15 @@ const ClientType = new GraphQLObjectType({
   }),
 });
 
+const ProjectStatusType = new GraphQLEnumType({
+  name: "ProjectStatus",
+  values: {
+    new: {value: "new"},
+    progress: {value: "progress"},
+    completed: {value: "completed"},
+  },
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -110,14 +119,7 @@ const mutation = new GraphQLObjectType({
         name: {type: GraphQLNonNull(GraphQLString)},
         description: {type: GraphQLNonNull(GraphQLString)},
         status: {
-          type: new GraphQLEnumType({
-            name: "ProjectStatus",
-            values: {
-              new: {value: "Not Started"},
-              progress: {value: "In Progress"},
-              completed: {value: "Completed"},
-            },
-          }),
+          type: ProjectStatusType,
           defaultValue: "Not Started",
         },
         clientId: {type: GraphQLNonNull(GraphQLID)},
@@ -146,28 +148,27 @@ const mutation = new GraphQLObjectType({
     updateProject: {
       type: ProjectType,
       args: {
-        id: {type: GraphQLNonNull(GraphQLString)},
+        id: {type: GraphQLNonNull(GraphQLID)},
         name: {type: GraphQLString},
         description: {type: GraphQLString},
         status: {
-          type: new GraphQLEnumType({
-            name: "ProjectStatusUpdate",
-            values: {
-              new: {value: "Not Started"},
-              progress: {value: "In Progress"},
-              completed: {value: "Completed"},
-            },
-          }),
+          type: ProjectStatusType,
         },
+        clientId: {type: GraphQLID},
       },
       resolve(parent, args) {
+        const NonNullArgs = {...args};
+        Object.entries(args).forEach(([key, val]) => {
+          if (!val) {
+            delete NonNullArgs.key;
+          }
+        });
+
         return Project.findByIdAndUpdate(
           args.id,
           {
             $set: {
-              name: args.name,
-              description: args.description,
-              status: args.status,
+              ...NonNullArgs,
             },
           },
           {new: true}

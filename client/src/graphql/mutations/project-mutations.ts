@@ -26,6 +26,33 @@ const ADD_PROJECT = graphql(`
   }
 `);
 
+const UPDATE_PROJECT = graphql(`
+  mutation updateProject(
+    $id: ID!
+    $name: String
+    $description: String
+    $status: ProjectStatus
+    $clientId: ID
+  ) {
+    updateProject(
+      id: $id
+      name: $name
+      description: $description
+      status: $status
+      clientId: $clientId
+    ) {
+      id
+      name
+      description
+      status
+      client {
+        id
+        name
+      }
+    }
+  }
+`);
+
 const DELETE_PROJECT = graphql(`
   mutation deleteProject($id: ID!) {
     deleteProject(id: $id) {
@@ -35,4 +62,4 @@ const DELETE_PROJECT = graphql(`
   }
 `);
 
-export {ADD_PROJECT, DELETE_PROJECT};
+export {ADD_PROJECT, DELETE_PROJECT, UPDATE_PROJECT};

@@ -11,7 +11,7 @@ const MainLayout: React.FC<PropsWithChildren> = ({children}) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <Layout className="h-[100vh] overflow-hidden">
         <Layout.Header className="!text-white">Management App</Layout.Header>
         <Layout.Content className="h-[calc(100vh-65px)] overflow-scroll flex flex-col w-screen h-screen py-6 px-12">
           {children}

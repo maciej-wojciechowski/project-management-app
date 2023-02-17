@@ -1,4 +1,5 @@
 import {GET_PROJECTS} from "@/graphql/queries/project-queries";
+import {getProjectStatusLabel} from "@/helpers/project-helpers";
 import {useQuery} from "@apollo/client";
 import {Button, Card, Spin, Typography} from "antd";
 import Link from "next/link";
@@ -30,12 +31,16 @@ const Projects = ({}: Props) => {
                 </Link>
               }
             >
-              <p>{project?.status}</p>
+              <p>{getProjectStatusLabel(project.status)}</p>
             </Card>
           ))}
         </div>
       </Spin>
-      <ProjectsModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ProjectsModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        type="add"
+      />
     </div>
   );
 };
