@@ -9,7 +9,9 @@ import ProjectsModal from "./projects-modal";
 type Props = {};
 
 const Projects = ({}: Props) => {
-  const {data, loading} = useQuery(GET_PROJECTS);
+  const {data, loading} = useQuery(GET_PROJECTS, {
+    fetchPolicy: "cache-and-network",
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const projects = data?.projects;

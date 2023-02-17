@@ -48,11 +48,11 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
         clientId: project.client.id,
       }
     : null;
-  console.log({mappedFormData});
+
   useEffect(() => {
+    form.resetFields();
     if (mappedFormData && props.open) {
       form.setFieldsValue(mappedFormData);
-      form.validateFields();
     }
   }, [project, props.open]);
 
