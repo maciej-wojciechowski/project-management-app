@@ -7,8 +7,10 @@ import {GET_CLIENTS_IDS_FOR_SELECT} from "@/graphql/queries/clients-queries";
 import {GET_PROJECTS} from "@/graphql/queries/project-queries";
 import {getProjectStatusLabel} from "@/helpers/project-helpers";
 import {ProjectType} from "@/pages/project/[projectId]";
+import {Nullable} from "@/types/helper-types";
 import {useMutation, useQuery} from "@apollo/client";
 import {Button, Form, Input, Modal, ModalProps, Select} from "antd";
+import {Rule, RuleObject} from "antd/es/form";
 import {useRouter} from "next/router";
 import React, {useEffect} from "react";
 
@@ -38,12 +40,19 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
 
   const [form] = Form.useForm<ProjectFormType>();
 
-  useEffect(() => {
-    if (project && props.open) {
-      form.setFieldsValue({
-        ...project,
+  const mappedFormData: ProjectFormType | null = project
+    ? {
+        name: project.name,
+        status: project.status,
+        description: project.description,
         clientId: project.client.id,
-      });
+      }
+    : null;
+  console.log({mappedFormData});
+  useEffect(() => {
+    if (mappedFormData && props.open) {
+      form.setFieldsValue(mappedFormData);
+      form.validateFields();
     }
   }, [project, props.open]);
 
@@ -57,6 +66,7 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
     if (type === "add") {
       form.resetFields();
     }
+    form.resetFields();
   };
 
   const onFinish = (values: ProjectFormType) => {
@@ -70,15 +80,47 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
       form.resetFields();
     }
     if (type === "update" && project) {
+      const valuesToUpdate: Nullable<ProjectFormType> = {
+        description: null,
+        name: null,
+        status: null,
+        clientId: null,
+      };
+      const fieldsStatuses = form.getFieldsError();
+      // sending values only when changed
+      Object.entries(values).forEach(([k, v]) => {
+        if (
+          fieldsStatuses.some(
+            ({name, warnings}) => name[0] === k && warnings.length
+          )
+        ) {
+          valuesToUpdate[k as keyof ProjectFormType] = v;
+        }
+      });
       updateProject({
         variables: {
-          ...values,
+          ...valuesToUpdate,
+          status: valuesToUpdate.status as ProjectStatus | null,
           id: project.id,
-          status: values.status as ProjectStatus,
         },
       });
     }
     props.onClose();
+  };
+
+  const customChangeRule: Rule = {
+    warningOnly: true,
+    validator: (rule, value) => {
+      const ruleWithFiled = rule as RuleObject & {field: keyof ProjectFormType};
+      if (
+        !value ||
+        !mappedFormData ||
+        mappedFormData[ruleWithFiled.field] === value
+      ) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error("Changed"));
+    },
   };
 
   return (
@@ -97,21 +139,36 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
         <Form.Item
           name="name"
           label="Name"
-          rules={[{required: type === "add"}]}
+          rules={[
+            {
+              required: type === "add",
+            },
+            customChangeRule,
+          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="description"
           label="Description"
-          rules={[{required: type === "add"}]}
+          rules={[
+            {
+              required: type === "add",
+            },
+            customChangeRule,
+          ]}
         >
           <Input.TextArea />
         </Form.Item>
         <Form.Item
           name="status"
           label="Status"
-          rules={[{required: type === "add"}]}
+          rules={[
+            {
+              required: type === "add",
+            },
+            customChangeRule,
+          ]}
         >
           <Select>
             {Object.values(ProjectStatus).map(status => (
@@ -124,7 +181,12 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
         <Form.Item
           name="clientId"
           label="Client"
-          rules={[{required: type === "add"}]}
+          rules={[
+            {
+              required: type === "add",
+            },
+            customChangeRule,
+          ]}
         >
           <Select loading={isLoadingClients}>
             {clientIds?.map(client => (

@@ -160,7 +160,7 @@ const mutation = new GraphQLObjectType({
         const NonNullArgs = {...args};
         Object.entries(args).forEach(([key, val]) => {
           if (!val) {
-            delete NonNullArgs.key;
+            delete NonNullArgs[key];
           }
         });
 
