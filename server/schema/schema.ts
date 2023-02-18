@@ -1,6 +1,7 @@
 // Mongoose models
 import Project from "../models/Project";
 import Client from "../models/Client";
+import paginate from "mongoose-paginate-v2";
 
 import {
   GraphQLObjectType,
@@ -10,7 +11,11 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLEnumType,
+  GraphQLInt,
+  GraphQLBoolean,
 } from "graphql";
+import {PaginationParameters} from "mongoose-paginate-v2";
+import mongoose, {Model} from "mongoose";
 
 //ProjectType
 const ProjectType = new GraphQLObjectType({
@@ -28,6 +33,19 @@ const ProjectType = new GraphQLObjectType({
     },
   }),
 });
+//ProjectWithPagination
+const withPagination = (model: any, name: string) =>
+  new GraphQLObjectType({
+    name,
+    fields: () => ({
+      docs: {type: model},
+      page: {type: GraphQLInt},
+      totalPages: {type: GraphQLInt},
+      hasPrevPage: {type: GraphQLBoolean},
+      hasNextPage: {type: GraphQLBoolean},
+    }),
+  });
+
 //ClientType
 const ClientType = new GraphQLObjectType({
   name: "Client",
@@ -57,6 +75,26 @@ const RootQuery = new GraphQLObjectType({
         return Project.find();
       },
     },
+    someProjects: {
+      type: withPagination(
+        GraphQLNonNull(new GraphQLList(ProjectType)),
+        "ProjectsPagination"
+      ),
+      args: {
+        page: {type: GraphQLNonNull(GraphQLInt)},
+        perPage: {type: GraphQLNonNull(GraphQLInt)},
+      },
+      async resolve(parent, {page, perPage}) {
+        const {
+          totalPages,
+          docs,
+          hasNextPage,
+          hasPrevPage,
+          page: currentPage,
+        } = await Project.paginate({}, {page, limit: perPage});
+        return {totalPages, docs, page: currentPage, hasNextPage, hasPrevPage};
+      },
+    },
     project: {
       type: ProjectType,
       args: {id: {type: GraphQLID}},
@@ -68,6 +106,26 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(GraphQLNonNull(ClientType)),
       resolve(parent, args) {
         return Client.find();
+      },
+    },
+    someClients: {
+      type: withPagination(
+        GraphQLNonNull(new GraphQLList(ClientType)),
+        "ClientsPagination"
+      ),
+      args: {
+        page: {type: GraphQLNonNull(GraphQLInt)},
+        perPage: {type: GraphQLNonNull(GraphQLInt)},
+      },
+      async resolve(parent, {page, perPage}) {
+        const {
+          totalPages,
+          docs,
+          hasNextPage,
+          hasPrevPage,
+          page: currentPage,
+        } = await Client.paginate({}, {page, limit: perPage});
+        return {totalPages, docs, page: currentPage, hasNextPage, hasPrevPage};
       },
     },
     client: {

@@ -1,5 +1,6 @@
-// const mongoose = require("mongoose");
 import mongoose from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
 import {
   ClientDocument,
   ClientModel,
@@ -18,9 +19,11 @@ const ClientSchema: ClientSchema = new mongoose.Schema({
   },
 });
 
-const ClientModel = mongoose.model<ClientDocument, ClientModel>(
-  "Client",
-  ClientSchema
-);
+ClientSchema.plugin(paginate);
+
+const ClientModel = mongoose.model<
+  ClientDocument,
+  mongoose.PaginateModel<ClientDocument>
+>("Client", ClientSchema);
 
 export default ClientModel;
