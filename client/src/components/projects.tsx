@@ -26,6 +26,7 @@ const Projects = ({}: Props) => {
         <div className="grid grid-cols-3 gap-3">
           {projects?.map(project => (
             <Card
+              key={project.id}
               title={project.name}
               extra={
                 <Link href={`project/${project.id}`}>

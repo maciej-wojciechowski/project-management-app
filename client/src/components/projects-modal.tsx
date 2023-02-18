@@ -172,7 +172,7 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
         >
           <Select>
             {Object.values(ProjectStatus).map(status => (
-              <Select.Option value={status}>
+              <Select.Option value={status} key={status}>
                 {getProjectStatusLabel(status)}
               </Select.Option>
             ))}
@@ -190,7 +190,9 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
         >
           <Select loading={isLoadingClients}>
             {clientIds?.map(client => (
-              <Select.Option value={client.id}>{client.name}</Select.Option>
+              <Select.Option value={client.id} key={client.id}>
+                {client.name}
+              </Select.Option>
             ))}
           </Select>
         </Form.Item>
