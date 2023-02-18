@@ -21,7 +21,7 @@ const ProjectType = new GraphQLObjectType({
     description: {type: GraphQLNonNull(GraphQLString)},
     status: {type: GraphQLNonNull(GraphQLString)},
     client: {
-      type: GraphQLNonNull(ClientType),
+      type: ClientType,
       resolve(parent, args) {
         return Client.findById(parent.clientId);
       },
@@ -122,7 +122,7 @@ const mutation = new GraphQLObjectType({
           type: ProjectStatusType,
           defaultValue: "Not Started",
         },
-        clientId: {type: GraphQLNonNull(GraphQLID)},
+        clientId: {type: GraphQLID},
       },
       resolve(parent, args) {
         const project = new Project({
@@ -159,7 +159,7 @@ const mutation = new GraphQLObjectType({
       resolve(parent, args) {
         const NonNullArgs = {...args};
         Object.entries(args).forEach(([key, val]) => {
-          if (!val) {
+          if (val === null) {
             delete NonNullArgs[key];
           }
         });

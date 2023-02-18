@@ -24,7 +24,7 @@ type ProjectFormType = {
   description: string;
   name: string;
   status: string;
-  clientId: string;
+  clientId: string | null;
 };
 
 const ProjectsModal = ({type, project, ...props}: Props) => {
@@ -45,7 +45,7 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
         name: project.name,
         status: project.status,
         description: project.description,
-        clientId: project.client.id,
+        clientId: project?.client?.id ?? null,
       }
     : null;
 
@@ -108,20 +108,24 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
     props.onClose();
   };
 
-  const customChangeRule: Rule = {
-    warningOnly: true,
-    validator: (rule, value) => {
-      const ruleWithFiled = rule as RuleObject & {field: keyof ProjectFormType};
-      if (
-        !value ||
-        !mappedFormData ||
-        mappedFormData[ruleWithFiled.field] === value
-      ) {
-        return Promise.resolve();
-      }
-      return Promise.reject(new Error("Changed"));
-    },
-  };
+  const customChangeRule: Rule =
+    type !== "update"
+      ? {}
+      : {
+          warningOnly: true,
+          validator: (rule, value) => {
+            const ruleWithFiled = rule as RuleObject & {
+              field: keyof ProjectFormType;
+            };
+            if (
+              (!value && !mappedFormData) ||
+              (mappedFormData && mappedFormData[ruleWithFiled.field] === value)
+            ) {
+              return Promise.resolve();
+            }
+            return Promise.reject(new Error("Changed"));
+          },
+        };
 
   return (
     <Modal
@@ -170,7 +174,7 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
             customChangeRule,
           ]}
         >
-          <Select>
+          <Select placeholder="Choose status">
             {Object.values(ProjectStatus).map(status => (
               <Select.Option value={status} key={status}>
                 {getProjectStatusLabel(status)}
@@ -178,17 +182,8 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item
-          name="clientId"
-          label="Client"
-          rules={[
-            {
-              required: type === "add",
-            },
-            customChangeRule,
-          ]}
-        >
-          <Select loading={isLoadingClients}>
+        <Form.Item name="clientId" label="Client" rules={[customChangeRule]}>
+          <Select loading={isLoadingClients} placeholder="Choose client">
             {clientIds?.map(client => (
               <Select.Option value={client.id} key={client.id}>
                 {client.name}

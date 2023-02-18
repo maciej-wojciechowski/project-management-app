@@ -5,7 +5,7 @@ const ADD_PROJECT = graphql(`
     $name: String!
     $description: String!
     $status: ProjectStatus
-    $clientId: ID!
+    $clientId: ID
   ) {
     addProject(
       name: $name

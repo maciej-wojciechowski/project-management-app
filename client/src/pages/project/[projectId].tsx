@@ -36,46 +36,48 @@ const ProjectPage = ({projectData}: Props) => {
     deleteProject({variables: {id: projectData.id}});
   };
   return (
-    <Card
-      title={projectData?.name ?? "..."}
-      extra={
-        <>
-          <Button
-            className="mr-3"
-            disabled={!projectData}
-            onClick={() => setIsModalOpen(true)}
-          >
-            Update
-          </Button>
-          <Button className="mr-3" disabled={!projectData} onClick={onDelete}>
-            Delete
-          </Button>
-          <Link href="/">
-            <Button>Back</Button>
-          </Link>
-        </>
-      }
-    >
-      {!projectData ? (
-        <span className="flex justify-center">No data...</span>
-      ) : (
-        <>
-          <span>Status: {getProjectStatusLabel(projectData.status)}</span>
-          <p>
-            <span>Description: </span>
-            {projectData.description}
-          </p>
-          {projectId}
-          <ClientInfo clientData={projectData.client} />
-        </>
-      )}
-      <ProjectsModal
-        project={projectData}
-        open={isModalOpen}
-        type="update"
-        onClose={() => setIsModalOpen(false)}
-      />
-    </Card>
+    <div className="w-full lg:w-1/2 mx-auto">
+      <Card
+        title={projectData?.name ?? "..."}
+        extra={
+          <>
+            <Button
+              className="mr-3"
+              disabled={!projectData}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Update
+            </Button>
+            <Button className="mr-3" disabled={!projectData} onClick={onDelete}>
+              Delete
+            </Button>
+            <Link href="/">
+              <Button>Back</Button>
+            </Link>
+          </>
+        }
+      >
+        {!projectData ? (
+          <span className="flex justify-center">No data...</span>
+        ) : (
+          <>
+            <span>Status: {getProjectStatusLabel(projectData.status)}</span>
+            <p>
+              <span>Description: </span>
+              {projectData.description}
+            </p>
+            {projectId}
+            <ClientInfo clientData={projectData.client} />
+          </>
+        )}
+        <ProjectsModal
+          project={projectData}
+          open={isModalOpen}
+          type="update"
+          onClose={() => setIsModalOpen(false)}
+        />
+      </Card>
+    </div>
   );
 };
 

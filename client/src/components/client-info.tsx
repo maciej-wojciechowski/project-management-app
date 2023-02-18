@@ -9,9 +9,15 @@ type Props = {
 const ClientInfo = ({clientData}: Props) => {
   return (
     <Card title="Client Info">
-      <p>Name: {clientData.name}</p>
-      <p>Email: {clientData.email}</p>
-      <p>Phone: {clientData.phone}</p>
+      {clientData ? (
+        <>
+          <p>Name: {clientData.name}</p>
+          <p>Email: {clientData.email}</p>
+          <p>Phone: {clientData.phone}</p>
+        </>
+      ) : (
+        <span>No client assigned to this project</span>
+      )}
     </Card>
   );
 };
