@@ -1,7 +1,6 @@
 // Mongoose models
 import Project from "../models/Project";
 import Client from "../models/Client";
-import paginate from "mongoose-paginate-v2";
 
 import {
   GraphQLObjectType,
@@ -14,8 +13,16 @@ import {
   GraphQLInt,
   GraphQLBoolean,
 } from "graphql";
-import {PaginationParameters} from "mongoose-paginate-v2";
-import mongoose, {Model} from "mongoose";
+
+const paginationInfoType = new GraphQLObjectType({
+  name: "PaginationInfo",
+  fields: () => ({
+    page: {type: GraphQLInt},
+    totalPages: {type: GraphQLInt},
+    hasPrevPage: {type: GraphQLBoolean},
+    hasNextPage: {type: GraphQLBoolean},
+  }),
+});
 
 //ProjectType
 const ProjectType = new GraphQLObjectType({
@@ -38,11 +45,8 @@ const withPagination = (model: any, name: string) =>
   new GraphQLObjectType({
     name,
     fields: () => ({
-      docs: {type: model},
-      page: {type: GraphQLInt},
-      totalPages: {type: GraphQLInt},
-      hasPrevPage: {type: GraphQLBoolean},
-      hasNextPage: {type: GraphQLBoolean},
+      data: {type: model},
+      pageInfo: {type: paginationInfoType},
     }),
   });
 
@@ -92,7 +96,10 @@ const RootQuery = new GraphQLObjectType({
           hasPrevPage,
           page: currentPage,
         } = await Project.paginate({}, {page, limit: perPage});
-        return {totalPages, docs, page: currentPage, hasNextPage, hasPrevPage};
+        return {
+          data: docs,
+          pageInfo: {totalPages, page: currentPage, hasNextPage, hasPrevPage},
+        };
       },
     },
     project: {
@@ -125,7 +132,10 @@ const RootQuery = new GraphQLObjectType({
           hasPrevPage,
           page: currentPage,
         } = await Client.paginate({}, {page, limit: perPage});
-        return {totalPages, docs, page: currentPage, hasNextPage, hasPrevPage};
+        return {
+          data: docs,
+          pageInfo: {totalPages, page: currentPage, hasNextPage, hasPrevPage},
+        };
       },
     },
     client: {
