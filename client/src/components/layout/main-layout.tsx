@@ -15,7 +15,7 @@ const MainLayout: React.FC<PropsWithChildren> = ({children}) => {
       <Layout className="h-[100vh] overflow-hidden">
         <Layout.Header className="!text-white">
           <Link href={"/"}>
-            <h4>Management App</h4>
+            <span>Management App</span>
           </Link>
         </Layout.Header>
         <Layout.Content className="h-[calc(100vh-65px)] overflow-scroll flex flex-col w-screen h-screen py-6 px-12">

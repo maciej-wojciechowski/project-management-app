@@ -1,9 +1,6 @@
 import {MutationAddClientArgs} from "@/gql/graphql";
 import {ADD_CLIENT} from "@/graphql/mutations/client-mutations";
-import {
-  GET_CLIENTS,
-  GET_PAGINATED_CLIENTS,
-} from "@/graphql/queries/clients-queries";
+import {GET_PAGINATED_CLIENTS} from "@/graphql/queries/clients-queries";
 import {useMutation} from "@apollo/client";
 import {Button, Form, Input, Modal, ModalProps} from "antd";
 import React from "react";
@@ -79,7 +76,7 @@ const ClientsModal = ({...props}: Props) => {
         >
           <Input />
         </Form.Item>
-        <Button className="text-black ml-auto" type="primary" htmlType="submit">
+        <Button className="ml-auto" type="primary" htmlType="submit">
           Submit
         </Button>
       </Form>

@@ -191,7 +191,7 @@ const ProjectsModal = ({type, project, ...props}: Props) => {
             ))}
           </Select>
         </Form.Item>
-        <Button className="text-black ml-auto" type="primary" htmlType="submit">
+        <Button className="ml-auto" type="primary" htmlType="submit">
           Submit
         </Button>
       </Form>
