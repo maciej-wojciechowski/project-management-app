@@ -27,4 +27,16 @@ const GET_PROJECT = graphql(`
   }
 `);
 
+const GET_PAGINATED_PROJECTS = graphql(`
+  query paginatedProjects($page: Int!, $perPage: Int!) {
+    paginatedProjects(page: $page, perPage: $perPage) {
+      pageInfo {
+        page
+        hasNextPage
+        hasPrevPage
+      }
+    }
+  }
+`);
+
 export {GET_PROJECTS, GET_PROJECT};

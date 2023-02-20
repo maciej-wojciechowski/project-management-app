@@ -18,10 +18,12 @@ const documents = {
     "\n  mutation addProject(\n    $name: String!\n    $description: String!\n    $status: ProjectStatus\n    $clientId: ID\n  ) {\n    addProject(\n      name: $name\n      description: $description\n      status: $status\n      clientId: $clientId\n    ) {\n      id\n      name\n      description\n      status\n      client {\n        id\n        name\n        email\n      }\n    }\n  }\n": types.AddProjectDocument,
     "\n  mutation updateProject(\n    $id: ID!\n    $name: String\n    $description: String\n    $status: ProjectStatus\n    $clientId: ID\n  ) {\n    updateProject(\n      id: $id\n      name: $name\n      description: $description\n      status: $status\n      clientId: $clientId\n    ) {\n      id\n      name\n      description\n      status\n      client {\n        id\n        name\n      }\n    }\n  }\n": types.UpdateProjectDocument,
     "\n  mutation deleteProject($id: ID!) {\n    deleteProject(id: $id) {\n      id\n      name\n    }\n  }\n": types.DeleteProjectDocument,
+    "\n  query paginatedClients($page: Int!, $perPage: Int!) {\n    paginatedClients(page: $page, perPage: $perPage) {\n      pageInfo {\n        totalItems\n      }\n      clients {\n        id\n        name\n        email\n        phone\n        email\n      }\n    }\n  }\n": types.PaginatedClientsDocument,
     "\n  query getClients {\n    clients {\n      name\n      id\n      name\n      phone\n      email\n    }\n  }\n": types.GetClientsDocument,
     "\n  query getClientsIds {\n    clients {\n      name\n      id\n      name\n    }\n  }\n": types.GetClientsIdsDocument,
     "\n  query getProjects {\n    projects {\n      id\n      name\n      status\n    }\n  }\n": types.GetProjectsDocument,
     "\n  query getProject($id: ID!) {\n    project(id: $id) {\n      id\n      name\n      status\n      description\n      client {\n        id\n        name\n        email\n        phone\n      }\n    }\n  }\n": types.GetProjectDocument,
+    "\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n    }\n  }\n": types.PaginatedProjectsDocument,
 };
 
 /**
@@ -61,6 +63,10 @@ export function graphql(source: "\n  mutation deleteProject($id: ID!) {\n    del
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  query paginatedClients($page: Int!, $perPage: Int!) {\n    paginatedClients(page: $page, perPage: $perPage) {\n      pageInfo {\n        totalItems\n      }\n      clients {\n        id\n        name\n        email\n        phone\n        email\n      }\n    }\n  }\n"): (typeof documents)["\n  query paginatedClients($page: Int!, $perPage: Int!) {\n    paginatedClients(page: $page, perPage: $perPage) {\n      pageInfo {\n        totalItems\n      }\n      clients {\n        id\n        name\n        email\n        phone\n        email\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query getClients {\n    clients {\n      name\n      id\n      name\n      phone\n      email\n    }\n  }\n"): (typeof documents)["\n  query getClients {\n    clients {\n      name\n      id\n      name\n      phone\n      email\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -74,6 +80,10 @@ export function graphql(source: "\n  query getProjects {\n    projects {\n      
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query getProject($id: ID!) {\n    project(id: $id) {\n      id\n      name\n      status\n      description\n      client {\n        id\n        name\n        email\n        phone\n      }\n    }\n  }\n"): (typeof documents)["\n  query getProject($id: ID!) {\n    project(id: $id) {\n      id\n      name\n      status\n      description\n      client {\n        id\n        name\n        email\n        phone\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n    }\n  }\n"): (typeof documents)["\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

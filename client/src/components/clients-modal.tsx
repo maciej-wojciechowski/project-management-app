@@ -1,6 +1,9 @@
 import {MutationAddClientArgs} from "@/gql/graphql";
 import {ADD_CLIENT} from "@/graphql/mutations/client-mutations";
-import {GET_CLIENTS} from "@/graphql/queries/clients-queries";
+import {
+  GET_CLIENTS,
+  GET_PAGINATED_CLIENTS,
+} from "@/graphql/queries/clients-queries";
 import {useMutation} from "@apollo/client";
 import {Button, Form, Input, Modal, ModalProps} from "antd";
 import React from "react";
@@ -11,20 +14,20 @@ type Props = ModalProps & {
 
 const ClientsModal = ({...props}: Props) => {
   const [addClient] = useMutation(ADD_CLIENT, {
+    refetchQueries: [GET_PAGINATED_CLIENTS],
+    // THIS QUERY HAS CHANGED AND REMOVING FOR NOW - LEAVING TO COPY IN OTHER USE CASE
     //saving to cache not refetching
-    update(cache, {data}) {
-      const clients = cache.readQuery({query: GET_CLIENTS})?.clients;
-      const addClient = data?.addClient;
-
-      if (!addClient || !clients) {
-        return;
-      }
-
-      cache.writeQuery({
-        query: GET_CLIENTS,
-        data: {clients: [...clients, addClient]},
-      });
-    },
+    // update(cache, {data}) {
+    //   const clients = cache.readQuery({query: GET_CLIENTS})?.clients;
+    //   const addClient = data?.addClient;
+    //   if (!addClient || !clients) {
+    //     return;
+    //   }
+    //   cache.writeQuery({
+    //     query: GET_CLIENTS,
+    //     data: {clients: [...clients, addClient]},
+    //   });
+    // },
   });
   const [form] = Form.useForm();
 
@@ -70,7 +73,7 @@ const ClientsModal = ({...props}: Props) => {
             {required: true},
             {
               pattern: new RegExp(/^\d{9}$/),
-              message: "Not a valid number",
+              message: "Must be a 9 digits",
             },
           ]}
         >

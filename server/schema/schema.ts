@@ -14,13 +14,36 @@ import {
   GraphQLBoolean,
 } from "graphql";
 
+/**
+ * helpers
+ */
+const withPagination = (
+  model: GraphQLObjectType,
+  name: string,
+  dataName: string
+) =>
+  new GraphQLObjectType({
+    name,
+    fields: () => ({
+      [dataName]: {
+        type: GraphQLNonNull(new GraphQLList(GraphQLNonNull(model))),
+      },
+      pageInfo: {type: GraphQLNonNull(paginationInfoType)},
+    }),
+  });
+
+/**
+ * Types
+ */
+
 const paginationInfoType = new GraphQLObjectType({
   name: "PaginationInfo",
   fields: () => ({
-    page: {type: GraphQLInt},
-    totalPages: {type: GraphQLInt},
-    hasPrevPage: {type: GraphQLBoolean},
-    hasNextPage: {type: GraphQLBoolean},
+    page: {type: GraphQLNonNull(GraphQLInt)},
+    totalPages: {type: GraphQLNonNull(GraphQLInt)},
+    totalItems: {type: GraphQLNonNull(GraphQLInt)},
+    hasPrevPage: {type: GraphQLNonNull(GraphQLBoolean)},
+    hasNextPage: {type: GraphQLNonNull(GraphQLBoolean)},
   }),
 });
 
@@ -40,15 +63,6 @@ const ProjectType = new GraphQLObjectType({
     },
   }),
 });
-//ProjectWithPagination
-const withPagination = (model: any, name: string) =>
-  new GraphQLObjectType({
-    name,
-    fields: () => ({
-      data: {type: model},
-      pageInfo: {type: paginationInfoType},
-    }),
-  });
 
 //ClientType
 const ClientType = new GraphQLObjectType({
@@ -70,6 +84,17 @@ const ProjectStatusType = new GraphQLEnumType({
   },
 });
 
+const ClientsWithPagination = withPagination(
+  ClientType,
+  "ClientsPaginated",
+  "clients"
+);
+const ProjectsWithPagination = withPagination(
+  ProjectType,
+  "ProjectsPaginated",
+  "projects"
+);
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -79,17 +104,15 @@ const RootQuery = new GraphQLObjectType({
         return Project.find();
       },
     },
-    someProjects: {
-      type: withPagination(
-        GraphQLNonNull(new GraphQLList(ProjectType)),
-        "ProjectsPagination"
-      ),
+    paginatedProjects: {
+      type: ProjectsWithPagination,
       args: {
         page: {type: GraphQLNonNull(GraphQLInt)},
         perPage: {type: GraphQLNonNull(GraphQLInt)},
       },
       async resolve(parent, {page, perPage}) {
         const {
+          totalDocs,
           totalPages,
           docs,
           hasNextPage,
@@ -97,8 +120,14 @@ const RootQuery = new GraphQLObjectType({
           page: currentPage,
         } = await Project.paginate({}, {page, limit: perPage});
         return {
-          data: docs,
-          pageInfo: {totalPages, page: currentPage, hasNextPage, hasPrevPage},
+          projects: docs,
+          pageInfo: {
+            totalPages,
+            page: currentPage,
+            hasNextPage,
+            hasPrevPage,
+            totalItems: totalDocs,
+          },
         };
       },
     },
@@ -115,17 +144,15 @@ const RootQuery = new GraphQLObjectType({
         return Client.find();
       },
     },
-    someClients: {
-      type: withPagination(
-        GraphQLNonNull(new GraphQLList(ClientType)),
-        "ClientsPagination"
-      ),
+    paginatedClients: {
+      type: GraphQLNonNull(ClientsWithPagination),
       args: {
         page: {type: GraphQLNonNull(GraphQLInt)},
         perPage: {type: GraphQLNonNull(GraphQLInt)},
       },
       async resolve(parent, {page, perPage}) {
         const {
+          totalDocs,
           totalPages,
           docs,
           hasNextPage,
@@ -133,8 +160,14 @@ const RootQuery = new GraphQLObjectType({
           page: currentPage,
         } = await Client.paginate({}, {page, limit: perPage});
         return {
-          data: docs,
-          pageInfo: {totalPages, page: currentPage, hasNextPage, hasPrevPage},
+          clients: docs,
+          pageInfo: {
+            totalPages,
+            page: currentPage,
+            hasNextPage,
+            hasPrevPage,
+            totalItems: totalDocs,
+          },
         };
       },
     },
