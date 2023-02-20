@@ -23,7 +23,7 @@ const documents = {
     "\n  query getClientsIds {\n    clients {\n      name\n      id\n      name\n    }\n  }\n": types.GetClientsIdsDocument,
     "\n  query getProjects {\n    projects {\n      id\n      name\n      status\n    }\n  }\n": types.GetProjectsDocument,
     "\n  query getProject($id: ID!) {\n    project(id: $id) {\n      id\n      name\n      status\n      description\n      client {\n        id\n        name\n        email\n        phone\n      }\n    }\n  }\n": types.GetProjectDocument,
-    "\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n    }\n  }\n": types.PaginatedProjectsDocument,
+    "\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n      projects {\n        id\n        name\n        status\n      }\n    }\n  }\n": types.PaginatedProjectsDocument,
 };
 
 /**
@@ -83,7 +83,7 @@ export function graphql(source: "\n  query getProject($id: ID!) {\n    project(i
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n    }\n  }\n"): (typeof documents)["\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n      projects {\n        id\n        name\n        status\n      }\n    }\n  }\n"): (typeof documents)["\n  query paginatedProjects($page: Int!, $perPage: Int!) {\n    paginatedProjects(page: $page, perPage: $perPage) {\n      pageInfo {\n        page\n        hasNextPage\n        hasPrevPage\n      }\n      projects {\n        id\n        name\n        status\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

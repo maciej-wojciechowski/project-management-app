@@ -15,6 +15,18 @@ const cache = new InMemoryCache({
             return incoming;
           },
         },
+        paginatedProjects: {
+          keyArgs: false,
+          merge(existing = {projects: []}, incoming) {
+            if (!incoming?.projects) {
+              return existing;
+            }
+            return {
+              ...incoming,
+              projects: [...existing.projects, ...incoming.projects],
+            };
+          },
+        },
       },
     },
   },

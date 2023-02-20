@@ -1,4 +1,7 @@
-import {GET_PROJECTS} from "@/graphql/queries/project-queries";
+import {
+  GET_PAGINATED_PROJECTS,
+  GET_PROJECTS,
+} from "@/graphql/queries/project-queries";
 import {getProjectStatusLabel} from "@/helpers/project-helpers";
 import {useQuery} from "@apollo/client";
 import {Button, Card, Spin, Typography} from "antd";
@@ -8,13 +11,18 @@ import ProjectsModal from "./projects-modal";
 
 type Props = {};
 
-const Projects = ({}: Props) => {
-  const {data, loading} = useQuery(GET_PROJECTS, {
-    fetchPolicy: "cache-and-network",
-  });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const DEFAULT_PER_PAGE = 3;
 
-  const projects = data?.projects;
+const Projects = ({}: Props) => {
+  const {data, loading, fetchMore} = useQuery(GET_PAGINATED_PROJECTS, {
+    variables: {page: 1, perPage: DEFAULT_PER_PAGE},
+    notifyOnNetworkStatusChange: true,
+  });
+  const mappedData = {
+    projects: data?.paginatedProjects?.projects ?? [],
+    page: data?.paginatedProjects?.pageInfo.page,
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div>
@@ -24,7 +32,7 @@ const Projects = ({}: Props) => {
       </Button>
       <Spin spinning={loading}>
         <div className="grid grid-cols-3 gap-3">
-          {projects?.map(project => (
+          {mappedData.projects.map(project => (
             <Card
               key={project.id}
               title={project.name}
@@ -38,6 +46,16 @@ const Projects = ({}: Props) => {
             </Card>
           ))}
         </div>
+        <Button
+          onClick={() =>
+            mappedData.page &&
+            fetchMore({
+              variables: {page: ++mappedData.page, perPage: DEFAULT_PER_PAGE},
+            })
+          }
+        >
+          Load more...
+        </Button>
       </Spin>
       <ProjectsModal
         open={isModalOpen}

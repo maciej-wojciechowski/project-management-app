@@ -35,8 +35,13 @@ const GET_PAGINATED_PROJECTS = graphql(`
         hasNextPage
         hasPrevPage
       }
+      projects {
+        id
+        name
+        status
+      }
     }
   }
 `);
 
-export {GET_PROJECTS, GET_PROJECT};
+export {GET_PROJECTS, GET_PROJECT, GET_PAGINATED_PROJECTS};
