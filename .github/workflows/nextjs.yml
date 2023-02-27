@@ -55,6 +55,9 @@ jobs:
       - name: show directories
         run: |
           ls ${{ github.workspace }}
+      - name: change
+        run: |
+          cd ${{ github.workspace }}/client
       - name: Setup Pages
         uses: actions/configure-pages@v3
         with:
