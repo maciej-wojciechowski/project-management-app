@@ -28,10 +28,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: show
-        run: ls
-      - name: change to client
-        run: cd ./client
+      - name: List files in the repository
+      - run: ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Checkout
         uses: actions/checkout@v3
       - name: Detect package manager
