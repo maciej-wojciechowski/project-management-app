@@ -28,6 +28,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: show
+        run: ls
+      - name: change to client
+        run: cd ./client
       - name: Checkout
         uses: actions/checkout@v3
       - name: Detect package manager
